@@ -369,9 +369,13 @@
   }
 
   // --- 1. CONFIG: CLOUDFLARE BRIDGE ------------------------------------
-  const WORKER_URL = 'https://delicate-poetry-ebf6.nowic1247.workers.dev/';
+  // WORKER_URL is injected at build time via Vite env — never hardcoded
+  const WORKER_URL = typeof import.meta !== 'undefined' && import.meta.env
+    ? import.meta.env.VITE_WORKER_URL
+    : window.__WORKER_URL__;
 
   async function apiRequest(payload) {
+    if (!WORKER_URL) throw new Error('WORKER_URL not configured. Set VITE_WORKER_URL in .env');
     const response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
