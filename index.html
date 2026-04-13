@@ -369,10 +369,20 @@
   }
 
   // --- 1. CONFIG: CLOUDFLARE BRIDGE ------------------------------------
-  // WORKER_URL is injected at build time via Vite env — never hardcoded
   const WORKER_URL = typeof import.meta !== 'undefined' && import.meta.env
     ? import.meta.env.VITE_WORKER_URL
     : window.__WORKER_URL__;
+
+  // --- LAYER 3: Response schema validator (Zod-style, no deps) ---------
+  function validateApiResponse(data) {
+    if (!data || typeof data !== 'object') throw new Error('API_SCHEMA: response not object');
+    if (!Array.isArray(data.candidates) || data.candidates.length === 0)
+      throw new Error('API_SCHEMA: candidates missing or empty');
+    const part = data?.candidates?.[0]?.content?.parts?.[0];
+    if (!part || typeof part.text !== 'string')
+      throw new Error('API_SCHEMA: text field missing in response');
+    return part.text;
+  }
 
   async function apiRequest(payload) {
     if (!WORKER_URL) throw new Error('WORKER_URL not configured. Set VITE_WORKER_URL in .env');
@@ -381,10 +391,9 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    if (!response.ok) {
-      throw new Error(`Eco-Gate Route Failure: ${response.status}`);
-    }
-    return await response.json();
+    if (!response.ok) throw new Error(`Eco-Gate Route Failure: ${response.status}`);
+    const data = await response.json();
+    return { _text: validateApiResponse(data), _raw: data };
   }
 
   // --- 2. ALIGNMENT ENGINE (QA) ----------------------------------------
@@ -412,19 +421,15 @@
         contents: [{ parts: [{ text: input }] }],
         systemInstruction: { parts: [{ text: sys }] }
       };
-      const res = await apiRequest(payload);
-      const text = res.candidates[0].content.parts[0].text;
-
+      const { _text: text } = await apiRequest(payload);
       loader.classList.add('hidden');
 
       if (text.includes('[ALIGNMENT OK]')) {
         statusEl.innerText = 'o ⊨ r* [OK]';
-        statusEl.className =
-          'text-[10px] mono font-bold px-3 py-1 rounded bg-emerald-500/20 text-emerald-400';
+        statusEl.className = 'text-[10px] mono font-bold px-3 py-1 rounded bg-emerald-500/20 text-emerald-400';
       } else {
         statusEl.innerText = 'STOP-PROTOCOL / REFRAME';
-        statusEl.className =
-          'text-[10px] mono font-bold px-3 py-1 rounded bg-red-500/20 text-red-400';
+        statusEl.className = 'text-[10px] mono font-bold px-3 py-1 rounded bg-red-500/20 text-red-400';
       }
       answerEl.innerText = text.replace(/\[.*?\]/, '').trim();
     } catch (e) {
@@ -442,18 +447,15 @@
       'Translate the input state sense strictly to EN and CZ bilinguity. ' +
       'Return ONLY JSON: {"EN":"...", "CZ":"..."}';
 
-    results.innerHTML =
-      '<div class="ai-loading mx-auto mt-10 border-top-teal"></div>';
+    results.innerHTML = '<div class="ai-loading mx-auto mt-10 border-top-teal"></div>';
 
     try {
       const payload = {
         contents: [{ parts: [{ text: input }] }],
         systemInstruction: { parts: [{ text: sys }] }
       };
-      const res = await apiRequest(payload);
-      const data = JSON.parse(
-        res.candidates[0].content.parts[0].text.replace(/```json|```/g, '')
-      );
+      const { _text: raw } = await apiRequest(payload);
+      const data = JSON.parse(raw.replace(/```json|```/g, ''));
 
       results.innerHTML = '';
       Object.entries(data).forEach(([lang, val]) => {
@@ -464,12 +466,37 @@
           `</div>`;
       });
     } catch (e) {
-      results.innerHTML =
-        '<span class="text-red-500 text-xs">Sync Error: Morphism Failed</span>';
+      results.innerHTML = '<span class="text-red-500 text-xs">Sync Error: Morphism Failed</span>';
     }
   }
 
-  // --- 4. OTHER MODULES (STUBS) ----------------------------------------
+  // --- 4. PROBE (hero input) -------------------------------------------
+  async function askInnerMind() {
+    const input = document.getElementById('ai-query').value;
+    if (!input) return;
+    const container = document.getElementById('ai-response-container');
+    const loader = document.getElementById('probe-loading');
+    const responseEl = document.getElementById('ai-response');
+
+    container.classList.remove('hidden');
+    loader.classList.remove('hidden');
+    responseEl.innerText = '';
+
+    try {
+      const payload = {
+        contents: [{ parts: [{ text: input }] }],
+        systemInstruction: { parts: [{ text: 'You are Protocol O Core. Respond with state-sense clarity. Be brief.' }] }
+      };
+      const { _text: text } = await apiRequest(payload);
+      loader.classList.add('hidden');
+      responseEl.innerText = text;
+    } catch (e) {
+      loader.classList.add('hidden');
+      responseEl.innerText = e.message;
+    }
+  }
+
+  // --- 5. OTHER MODULES (STUBS) ----------------------------------------
   function triggerVoiceBriefing() {
     alert('TTS bridge not wired yet. Connect Worker to Gemini TTS when ready.');
   }
@@ -482,7 +509,7 @@
     alert('Visual audit via Worker not wired yet in this snapshot.');
   }
 
-  // --- 5. INNER SPACE + CHART INIT -------------------------------------
+  // --- 6. INNER SPACE + CHART INIT -------------------------------------
   function initInnerPlot() {
     const trace = {
       x: Array.from({ length: 100 }, () => Math.random() * 20),
@@ -520,20 +547,16 @@
       type: 'bar',
       data: {
         labels: appLocales.cs.chartLabels,
-        datasets: [
-          {
-            data: [95, 80, 85, 90],
-            backgroundColor: ['#2563eb', '#14b8a6', '#f97316', '#6366f1']
-          }
-        ]
+        datasets: [{
+          data: [95, 80, 85, 90],
+          backgroundColor: ['#2563eb', '#14b8a6', '#f97316', '#6366f1']
+        }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: {
-          y: { grid: { color: 'rgba(255,255,255,0.05)' } }
-        }
+        scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } } }
       }
     });
     setAppLang('cs');
