@@ -248,7 +248,7 @@
     </div>
   </div>
   <div class="flex gap-5 items-center flex-wrap justify-end">
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide max-w-[60vw]">
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide max-w-[70vw] sm:max-w-[60vw]">
       <span id="global-node-label" class="text-[9px] mono uppercase font-bold tracking-[0.25em] flex-shrink-0" style="color:var(--lf-audit)">Aktivní Uzel:</span>
       <div id="lang-selector-container" class="flex gap-2 flex-nowrap"></div>
     </div>
@@ -610,7 +610,11 @@
       if (typeof Chart === 'undefined') {
         await loadScript('https://cdn.jsdelivr.net/npm/chart.js');
       }
-      ethicsChartInstance = new Chart(document.getElementById('ethicsChart'), {
+      const ethicsCanvas = document.getElementById('ethicsChart');
+      // Pre-acquire 2D context with willReadFrequently to silence mobile
+      // Canvas2D readback warning; Chart.js reuses the cached context.
+      ethicsCanvas.getContext('2d', { willReadFrequently: true });
+      ethicsChartInstance = new Chart(ethicsCanvas, {
         type:'bar',
         data:{
           labels: appLocales[activeAppLang].chartLabels,
