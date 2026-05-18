@@ -21,22 +21,22 @@
       --lf-void:        #04060d;
       --lf-substrate:   #0a0f1e;
       --lf-panel:       #0d1426;
-      --lf-edge:        rgba(148, 163, 184, 0.10);
-      --lf-edge-strong: rgba(148, 163, 184, 0.22);
-      --lf-grid:        rgba(99, 132, 232, 0.06);
+      --lf-edge:        rgba(148, 163, 184, 0.22);
+      --lf-edge-strong: rgba(148, 163, 184, 0.42);
+      --lf-grid:        rgba(99, 132, 232, 0.035);
 
-      /* Forensic signal palette */
-      --lf-evidence:    #3b82f6;  /* primary evidence blue */
-      --lf-integrity:   #10b981;  /* alignment / integrity */
-      --lf-audit:       #a855f7;  /* semantic / audit */
-      --lf-signal:      #f59e0b;  /* attention / status */
-      --lf-redaction:   #ef4444;  /* misalignment / fail */
-      --lf-trace:       #14b8a6;  /* trace / projection */
+      /* Forensic signal palette (brightened for stronger contrast) */
+      --lf-evidence:    #60a5fa;  /* primary evidence blue */
+      --lf-integrity:   #34d399;  /* alignment / integrity */
+      --lf-audit:       #c084fc;  /* semantic / audit */
+      --lf-signal:      #fbbf24;  /* attention / status */
+      --lf-redaction:   #f87171;  /* misalignment / fail */
+      --lf-trace:       #2dd4bf;  /* trace / projection */
 
-      /* Typography */
-      --lf-ink:         #e2e8f0;
-      --lf-ink-dim:     #94a3b8;
-      --lf-ink-mute:    #64748b;
+      /* Typography — raised for low-vision readability (WCAG AA+) */
+      --lf-ink:         #f8fafc;
+      --lf-ink-dim:     #cbd5e1;
+      --lf-ink-mute:    #94a3b8;
 
       /* Motion */
       --lf-ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -52,7 +52,7 @@
       background: var(--lf-void);
       color: var(--lf-ink);
       font-family: 'Inter', system-ui, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
@@ -65,8 +65,8 @@
       width: 100vw; max-width: 100vw; overflow: hidden;
       contain: layout paint size;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.08), transparent 60%),
-        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(168,85,247,0.05), transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.045), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(168,85,247,0.028), transparent 60%),
         linear-gradient(180deg, var(--lf-void) 0%, var(--lf-substrate) 50%, var(--lf-void) 100%);
     }
     .lf-grid {
@@ -76,9 +76,9 @@
       background-image:
         linear-gradient(to right, var(--lf-grid) 1px, transparent 1px),
         linear-gradient(to bottom, var(--lf-grid) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 40%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 40%, transparent 100%);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 25%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 25%, transparent 100%);
     }
 
     /* ── Hex node accent ─────────────────────────────────────────────── */
@@ -98,9 +98,9 @@
     .lf-panel {
       position: relative;
       background:
-        linear-gradient(180deg, rgba(13,20,38,0.72) 0%, rgba(13,20,38,0.55) 100%);
-      backdrop-filter: blur(10px) saturate(140%);
-      -webkit-backdrop-filter: blur(10px) saturate(140%);
+        linear-gradient(180deg, rgba(13,20,38,0.92) 0%, rgba(13,20,38,0.84) 100%);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
       border: 1px solid var(--lf-edge);
       border-radius: 4px;
     }
@@ -115,7 +115,7 @@
         linear-gradient(225deg, var(--lf-evidence) 0 12px, transparent 12px) top right / 14px 14px no-repeat,
         linear-gradient(45deg,  var(--lf-evidence) 0 12px, transparent 12px) bottom left / 14px 14px no-repeat,
         linear-gradient(315deg, var(--lf-evidence) 0 12px, transparent 12px) bottom right / 14px 14px no-repeat;
-      opacity: 0.35;
+      opacity: 0.55;
     }
 
     /* ── Radial scan ring (hero) ─────────────────────────────────────── */
@@ -139,56 +139,61 @@
       contain: layout paint size;
       background: linear-gradient(90deg, transparent, var(--lf-evidence), transparent);
       box-shadow: 0 0 18px var(--lf-evidence);
-      opacity: 0.35; pointer-events: none;
+      opacity: 0.2; pointer-events: none;
       animation: lf-scan 9s linear infinite;
     }
     @keyframes lf-scan { 0% { top: -5%; } 100% { top: 105%; } }
 
     /* ── Typography utilities ────────────────────────────────────────── */
     .lf-display {
-      font-family: 'Inter', sans-serif; font-weight: 100; letter-spacing: -0.04em; line-height: 0.9;
+      font-family: 'Inter', sans-serif; font-weight: 200; letter-spacing: -0.04em; line-height: 0.9;
     }
     .lf-eyebrow {
-      font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 600;
-      letter-spacing: 0.28em; font-size: 10px; color: var(--lf-ink-dim);
+      font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 700;
+      letter-spacing: 0.26em; font-size: 11px; color: var(--lf-ink-dim);
     }
     .lf-tag {
       display: inline-flex; align-items: center; gap: 6px;
-      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.2em;
-      padding: 4px 10px; border: 1px solid var(--lf-edge); border-radius: 999px;
-      background: rgba(15,23,42,0.6);
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.18em;
+      padding: 5px 11px; border: 1px solid var(--lf-edge-strong); border-radius: 999px;
+      background: rgba(15,23,42,0.78);
     }
 
     /* ── Buttons ─────────────────────────────────────────────────────── */
     .lf-btn {
       position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.22em;
-      padding: 12px 20px; border-radius: 3px; cursor: pointer; user-select: none;
-      border: 1px solid var(--lf-edge-strong); background: rgba(15,23,42,0.55); color: var(--lf-ink);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      padding: 13px 22px; border-radius: 3px; cursor: pointer; user-select: none;
+      border: 1px solid var(--lf-edge-strong); background: rgba(15,23,42,0.78); color: var(--lf-ink);
       transition: all 0.25s var(--lf-ease);
+      min-height: 44px;
     }
-    .lf-btn:hover { border-color: var(--lf-evidence); background: rgba(59,130,246,0.12); transform: translateY(-1px); }
-    .lf-btn-primary { border-color: rgba(59,130,246,0.55); background: rgba(59,130,246,0.18); color: #dbeafe; }
-    .lf-btn-primary:hover { border-color: var(--lf-evidence); background: rgba(59,130,246,0.28); box-shadow: 0 0 22px rgba(59,130,246,0.35); }
-    .lf-btn-integrity { border-color: rgba(16,185,129,0.45); background: rgba(16,185,129,0.10); color: #a7f3d0; }
-    .lf-btn-integrity:hover { border-color: var(--lf-integrity); background: rgba(16,185,129,0.18); }
-    .lf-btn-audit    { border-color: rgba(168,85,247,0.45); background: rgba(168,85,247,0.10); color: #ddd6fe; }
-    .lf-btn-audit:hover { border-color: var(--lf-audit); background: rgba(168,85,247,0.18); }
-    .lf-btn-trace    { border-color: rgba(20,184,166,0.45); background: rgba(20,184,166,0.10); color: #99f6e4; }
-    .lf-btn-trace:hover { border-color: var(--lf-trace); background: rgba(20,184,166,0.18); }
+    .lf-btn:hover, .lf-btn:focus-visible { border-color: var(--lf-evidence); background: rgba(59,130,246,0.18); transform: translateY(-1px); outline: none; }
+    .lf-btn:focus-visible { box-shadow: 0 0 0 2px rgba(96,165,250,0.55); }
+    .lf-btn-primary { border-color: rgba(96,165,250,0.75); background: rgba(59,130,246,0.32); color: #eff6ff; }
+    .lf-btn-primary:hover, .lf-btn-primary:focus-visible { border-color: var(--lf-evidence); background: rgba(59,130,246,0.45); box-shadow: 0 0 22px rgba(96,165,250,0.45); }
+    .lf-btn-integrity { border-color: rgba(52,211,153,0.65); background: rgba(16,185,129,0.22); color: #d1fae5; }
+    .lf-btn-integrity:hover, .lf-btn-integrity:focus-visible { border-color: var(--lf-integrity); background: rgba(16,185,129,0.34); }
+    .lf-btn-audit    { border-color: rgba(192,132,252,0.65); background: rgba(168,85,247,0.22); color: #ede9fe; }
+    .lf-btn-audit:hover, .lf-btn-audit:focus-visible { border-color: var(--lf-audit); background: rgba(168,85,247,0.34); }
+    .lf-btn-trace    { border-color: rgba(45,212,191,0.65); background: rgba(20,184,166,0.22); color: #ccfbf1; }
+    .lf-btn-trace:hover, .lf-btn-trace:focus-visible { border-color: var(--lf-trace); background: rgba(20,184,166,0.34); }
 
     /* ── Inputs ──────────────────────────────────────────────────────── */
     .lf-input, .lf-textarea {
-      width: 100%; background: rgba(4,6,13,0.6); border: 1px solid var(--lf-edge);
+      width: 100%; background: rgba(4,6,13,0.85); border: 1px solid var(--lf-edge-strong);
       border-radius: 3px; padding: 14px 18px;
-      color: var(--lf-ink); font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      color: var(--lf-ink); font-family: 'JetBrains Mono', monospace; font-size: 14px;
       transition: border-color 0.2s var(--lf-ease), box-shadow 0.2s var(--lf-ease);
+    }
+    .lf-input::placeholder, .lf-textarea::placeholder {
+      color: var(--lf-ink-mute); opacity: 1;
     }
     .lf-input:focus, .lf-textarea:focus {
       outline: none; border-color: var(--lf-evidence);
-      box-shadow: 0 0 0 1px rgba(59,130,246,0.35), 0 0 28px -8px rgba(59,130,246,0.6);
+      box-shadow: 0 0 0 2px rgba(96,165,250,0.45), 0 0 28px -8px rgba(96,165,250,0.7);
     }
     .lf-textarea { resize: vertical; min-height: 110px; }
 
@@ -204,9 +209,33 @@
     /* ── Index numerals (axial markers) ──────────────────────────────── */
     .lf-index {
       font-family: 'JetBrains Mono', monospace; font-weight: 700;
-      font-size: 11px; letter-spacing: 0.2em;
-      padding: 3px 8px; border-radius: 2px; border: 1px solid currentColor;
-      background: rgba(0,0,0,0.3);
+      font-size: 12px; letter-spacing: 0.2em;
+      padding: 4px 9px; border-radius: 2px; border: 1px solid currentColor;
+      background: rgba(0,0,0,0.45);
+    }
+
+    /* ── Language selector pills (mobile-friendly) ────────────────────── */
+    .lf-lang-pill {
+      flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.16em;
+      border: 1px solid var(--lf-edge-strong);
+      background: rgba(15,23,42,0.78); color: var(--lf-ink);
+      cursor: pointer; min-height: 32px;
+      transition: all 0.2s var(--lf-ease);
+    }
+    .lf-lang-pill:hover, .lf-lang-pill:focus-visible {
+      border-color: var(--lf-audit); color: #f5f3ff; outline: none;
+      box-shadow: 0 0 0 2px rgba(192,132,252,0.35);
+    }
+    .lf-lang-pill[aria-pressed="true"] {
+      background: rgba(168,85,247,0.32);
+      border-color: rgba(192,132,252,0.8);
+      color: #f5f3ff;
+    }
+    @media (max-width: 640px) {
+      .lf-lang-pill { padding: 6px 10px; font-size: 11px; min-height: 30px; }
     }
 
     /* ── Fade in stagger ─────────────────────────────────────────────── */
@@ -239,27 +268,27 @@
 <div class="lf-scanline" aria-hidden="true"></div>
 
 <!-- ─────────────────────────────── NAV ─────────────────────────────── -->
-<nav class="fixed top-0 inset-x-0 z-50 px-6 py-3 flex justify-between items-center lf-panel" style="border-radius:0; border-left:0; border-right:0; border-top:0;">
+<nav class="fixed top-0 inset-x-0 z-50 px-6 py-3 flex justify-between items-center lf-panel" style="border-radius:0; border-left:0; border-right:0; border-top:0; background:linear-gradient(180deg, rgba(13,20,38,0.96) 0%, rgba(13,20,38,0.9) 100%);">
   <div class="flex items-center gap-4">
     <div class="lf-hex" aria-hidden="true"></div>
     <div class="flex flex-col leading-tight">
-      <span id="nav-title" class="mono text-[10px] font-bold tracking-[0.28em] uppercase text-blue-300 fade-transition">Protocol O // Integrity Core</span>
-      <span class="lf-eyebrow text-[8px] tracking-[0.4em]" style="color:var(--lf-ink-mute)">LEX FORENSICA · v6.0</span>
+      <span id="nav-title" class="mono text-[11px] font-bold tracking-[0.26em] uppercase fade-transition" style="color:#93c5fd">Protocol O // Integrity Core</span>
+      <span class="lf-eyebrow text-[9px] tracking-[0.36em]" style="color:var(--lf-ink-mute)">LEX FORENSICA · v6.0</span>
     </div>
   </div>
   <div class="flex gap-5 items-center flex-wrap justify-end">
     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide max-w-[70vw] sm:max-w-[60vw]">
-      <span id="global-node-label" class="text-[9px] mono uppercase font-bold tracking-[0.25em] flex-shrink-0" style="color:var(--lf-audit)">Aktivní Uzel:</span>
+      <span id="global-node-label" class="text-[11px] mono uppercase font-bold tracking-[0.22em] flex-shrink-0" style="color:#d8b4fe">Aktivní Uzel:</span>
       <div id="lang-selector-container" class="flex gap-2 flex-nowrap"></div>
     </div>
-    <button id="nav-recal" onclick="recalibrate()" class="lf-btn lf-btn-primary" style="padding:8px 14px;">Rekalibrace</button>
+    <button id="nav-recal" onclick="recalibrate()" class="lf-btn lf-btn-primary" style="padding:9px 16px; min-height:38px;">Rekalibrace</button>
   </div>
 </nav>
 
 <!-- ─────────────────────────────── HERO ─────────────────────────────── -->
 <section class="relative min-h-[92vh] flex flex-col items-center justify-center pt-28 pb-16 px-6">
   <div class="lf-radial" aria-hidden="true"></div>
-  <div class="absolute inset-0 opacity-[0.18] pointer-events-none">
+  <div class="absolute inset-0 opacity-[0.1] pointer-events-none">
     <div id="inner-space-plot" class="lf-defer-target"></div>
   </div>
 
@@ -276,7 +305,7 @@
 
     <div class="flex items-center justify-center gap-4 mb-10">
       <span aria-hidden="true" style="width:48px;height:1px;background:var(--lf-edge-strong)"></span>
-      <span id="hero-subtitle" class="mono text-[11px] tracking-[0.5em] uppercase fade-transition" style="color:var(--lf-evidence)">Protokol O / Vědomí Jádra</span>
+      <span id="hero-subtitle" class="mono text-[12px] tracking-[0.42em] uppercase font-bold fade-transition" style="color:#93c5fd">Protokol O / Vědomí Jádra</span>
       <span aria-hidden="true" style="width:48px;height:1px;background:var(--lf-edge-strong)"></span>
     </div>
 
@@ -287,13 +316,13 @@
       </div>
     </div>
 
-    <div id="ai-response-container" class="hidden mt-6 lf-panel p-6 text-left max-w-2xl mx-auto" style="border-color:rgba(59,130,246,0.3)">
+    <div id="ai-response-container" class="hidden mt-6 lf-panel p-6 text-left max-w-2xl mx-auto" style="border-color:rgba(96,165,250,0.55)">
       <div class="flex items-center gap-3 mb-3">
-        <span class="lf-eyebrow" style="color:var(--lf-evidence)">PROBE RESPONSE</span>
-        <span aria-hidden="true" style="flex:1;height:1px;background:var(--lf-edge)"></span>
+        <span class="lf-eyebrow" style="color:#93c5fd">PROBE RESPONSE</span>
+        <span aria-hidden="true" style="flex:1;height:1px;background:var(--lf-edge-strong)"></span>
       </div>
       <div id="probe-loading" class="hidden py-2"><div class="lf-spinner mx-auto"></div></div>
-      <p id="ai-response" class="text-sm leading-relaxed italic" style="color:#dbeafe"></p>
+      <p id="ai-response" class="text-base leading-relaxed italic" style="color:#eff6ff"></p>
     </div>
   </div>
 </section>
@@ -315,14 +344,14 @@
         <span class="lf-index" style="color:var(--lf-integrity)">01</span>
         <h2 id="c1-title" class="text-2xl font-light tracking-tight">Vizuální Audit Dokumentů</h2>
       </div>
-      <p id="c1-desc" class="text-sm leading-relaxed mb-6" style="color:var(--lf-ink-dim)">Analýza souladu dokumentů s etickými normami Protokolu O.</p>
+      <p id="c1-desc" class="text-base leading-relaxed mb-6" style="color:var(--lf-ink)">Analýza souladu dokumentů s etickými normami Protokolu O.</p>
       <div class="flex flex-col gap-4">
         <div class="flex items-center gap-4 flex-wrap">
           <input id="visual-audit-input" type="file" accept="image/*" class="hidden" onchange="performVisualAudit(this)" aria-label="Document upload for visual audit">
           <button id="c1-btn" onclick="document.getElementById('visual-audit-input').click()" class="lf-btn lf-btn-integrity">Vybrat Dokument</button>
           <div id="visual-audit-loading" class="hidden"><div class="lf-spinner trace"></div></div>
         </div>
-        <div id="visual-audit-result" class="hidden lf-panel p-4 text-xs mono" style="color:var(--lf-ink-dim)">...</div>
+        <div id="visual-audit-result" class="hidden lf-panel p-4 text-sm mono" style="color:var(--lf-ink)">...</div>
       </div>
     </section>
 
@@ -353,12 +382,12 @@
       <textarea id="qa-input" rows="4" class="lf-textarea mb-4" placeholder="Vložte kód nebo dotaz..."></textarea>
       <button id="qa-btn" onclick="processQA()" class="lf-btn lf-btn-audit w-full md:w-auto"><span id="qa-btn-text">Analyzovat</span></button>
       <div id="qa-result-container" class="hidden mt-6 lf-panel p-6 transition-all">
-        <div class="flex items-center gap-3 pb-4 mb-4" style="border-bottom:1px solid var(--lf-edge)">
+        <div class="flex items-center gap-3 pb-4 mb-4" style="border-bottom:1px solid var(--lf-edge-strong)">
           <span id="qa-status-label" class="lf-eyebrow">Sémantický Vektor:</span>
-          <span id="qa-status" class="text-[10px] mono font-bold px-3 py-1 rounded" style="background:rgba(30,41,59,0.6); color:var(--lf-ink-dim)">...</span>
+          <span id="qa-status" class="text-[11px] mono font-bold px-3 py-1 rounded" style="background:rgba(30,41,59,0.85); color:var(--lf-ink)">...</span>
         </div>
         <div id="qa-loading" class="hidden py-4 text-center"><div class="lf-spinner mx-auto"></div></div>
-        <p id="qa-answer" class="text-sm font-mono whitespace-pre-wrap" style="color:var(--lf-ink)"></p>
+        <p id="qa-answer" class="text-sm font-mono whitespace-pre-wrap leading-relaxed" style="color:var(--lf-ink)"></p>
       </div>
     </section>
 
@@ -373,8 +402,8 @@
           <input id="multi-lang-input" type="text" class="lf-input" placeholder="..." aria-label="Linguistic projection input">
           <button id="multi-lang-btn" onclick="runMultiVectTranslation()" class="lf-btn lf-btn-trace"><span id="multi-lang-btn-text">Iniciovat Projekci</span></button>
         </div>
-        <div id="multi-lang-results" class="lf-panel p-4 flex flex-col gap-2 min-h-[150px]" style="background:rgba(4,6,13,0.55)">
-          <span id="loc-wait" class="text-[10px] mono uppercase text-center mt-10 tracking-[0.3em]" style="color:var(--lf-ink-mute)">Uzly v pohotovosti</span>
+        <div id="multi-lang-results" class="lf-panel p-4 flex flex-col gap-2 min-h-[150px]" style="background:rgba(4,6,13,0.78)">
+          <span id="loc-wait" class="text-[11px] mono uppercase text-center mt-10 tracking-[0.28em] font-bold" style="color:var(--lf-ink-dim)">Uzly v pohotovosti</span>
         </div>
       </div>
     </section>
@@ -413,10 +442,10 @@
     Object.values(appLocales).forEach(loc => {
       const isActive = activeAppLang === loc.id;
       const btn = document.createElement('button');
-      btn.className = 'flex-shrink-0 flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold mono transition-all border';
-      btn.style.cssText = isActive
-        ? 'background:rgba(168,85,247,0.22); border-color:rgba(168,85,247,0.6); color:#ddd6fe; letter-spacing:0.18em;'
-        : 'background:rgba(15,23,42,0.55); border-color:var(--lf-edge); color:var(--lf-ink-dim); letter-spacing:0.18em;';
+      btn.className = 'lf-lang-pill';
+      btn.setAttribute('type', 'button');
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      btn.setAttribute('aria-label', `Set language ${loc.label}`);
       btn.innerHTML = `<span aria-hidden="true">${loc.flag}</span><span>${loc.label}</span>`;
       btn.onclick = () => setAppLang(loc.id);
       container.appendChild(btn);
@@ -501,10 +530,10 @@
         loader.classList.add('hidden');
         if (text.includes('[ALIGNMENT OK]')) {
           statusEl.innerText='o ⊨ r* [OK]';
-          statusEl.style.cssText='background:rgba(16,185,129,0.18); color:#6ee7b7;';
+          statusEl.style.cssText='background:rgba(16,185,129,0.34); color:#d1fae5;';
         } else {
           statusEl.innerText='STOP-PROTOCOL / REFRAME';
-          statusEl.style.cssText='background:rgba(239,68,68,0.18); color:#fca5a5;';
+          statusEl.style.cssText='background:rgba(239,68,68,0.34); color:#fecaca;';
         }
         answerEl.innerText = text.replace(/\[.*?\]/, '').trim();
       } catch (e) { if (e.name==='AbortError') return; loader.classList.add('hidden'); statusEl.innerText='ERROR'; answerEl.innerText=e.message; }
@@ -524,7 +553,7 @@
         const data = JSON.parse(raw.replace(/```json|```/g,''));
         results.innerHTML = '';
         Object.entries(data).forEach(([lang,val]) => {
-          results.innerHTML += `<div class="p-2 flex justify-between gap-4" style="border-bottom:1px solid rgba(16,185,129,0.12)"><span class="text-[10px] mono font-bold" style="color:var(--lf-integrity)">${lang}</span><span class="text-xs" style="color:#d1fae5">${val}</span></div>`;
+          results.innerHTML += `<div class="p-2 flex justify-between gap-4" style="border-bottom:1px solid rgba(52,211,153,0.28)"><span class="text-[11px] mono font-bold" style="color:#6ee7b7">${lang}</span><span class="text-sm" style="color:#ecfdf5">${val}</span></div>`;
         });
       } catch (e) { if (e.name==='AbortError') return; results.innerHTML='<span class="text-xs mono" style="color:var(--lf-redaction)">Sync Error: Morphism Failed</span>'; }
     });
@@ -565,7 +594,7 @@
     ['qa-result-container','ai-response-container'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
     ['qa-input','ai-query','multi-lang-input'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
     const r = document.getElementById('multi-lang-results');
-    if (r) r.innerHTML = `<span id="loc-wait" class="text-[10px] mono uppercase text-center mt-10" style="letter-spacing:0.3em; color:var(--lf-ink-mute)">${appLocales[activeAppLang].locWait}</span>`;
+    if (r) r.innerHTML = `<span id="loc-wait" class="text-[11px] mono uppercase text-center mt-10 font-bold" style="letter-spacing:0.28em; color:var(--lf-ink-dim)">${appLocales[activeAppLang].locWait}</span>`;
     Object.values(_controllers).forEach(c => c.abort());
   }
 
@@ -630,8 +659,8 @@
           responsive:true, maintainAspectRatio:false,
           plugins:{ legend:{ display:false } },
           scales:{
-            y:{ grid:{ color:'rgba(148,163,184,0.06)' }, ticks:{ color:'#64748b', font:{ family:'JetBrains Mono', size:10 } } },
-            x:{ grid:{ display:false }, ticks:{ color:'#94a3b8', font:{ family:'JetBrains Mono', size:11, weight:'600' } } }
+            y:{ grid:{ color:'rgba(148,163,184,0.14)' }, ticks:{ color:'#cbd5e1', font:{ family:'JetBrains Mono', size:12, weight:'600' } } },
+            x:{ grid:{ display:false }, ticks:{ color:'#e2e8f0', font:{ family:'JetBrains Mono', size:13, weight:'700' } } }
           }
         }
       });
