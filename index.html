@@ -258,6 +258,103 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
+
+    /* ──────────────────────────────────────────────────────────────────
+       A11Y — A++ KONTRAST / A− NORMÁL toggle
+       compact, safe-area-aware, single visible label, focus-visible ring
+    ────────────────────────────────────────────────────────────────── */
+    body { padding-bottom: max(56px, env(safe-area-inset-bottom, 0px)); }
+
+    #lf-a11y-toggle {
+      position: fixed;
+      right: max(12px, env(safe-area-inset-right, 0px));
+      bottom: max(12px, env(safe-area-inset-bottom, 0px));
+      z-index: 9999;
+      display: inline-flex; align-items: center; justify-content: center;
+      white-space: nowrap; line-height: 1;
+      font: 600 10px/1 'JetBrains Mono', 'Space Mono', ui-monospace, monospace;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      background: rgba(6,10,16,0.78); color: #d6dbe8;
+      border: 1px solid rgba(0,229,255,0.45); border-radius: 999px;
+      padding: 6px 10px; min-height: 28px; cursor: pointer;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.45);
+      opacity: 0.82;
+    }
+    #lf-a11y-toggle:hover { opacity: 1; color: #f6faff; border-color: #6fefff; background: rgba(0,30,42,0.92); }
+    #lf-a11y-toggle:focus-visible {
+      opacity: 1; outline: none; color: #f6faff;
+      border-color: #6fefff;
+      box-shadow: 0 0 0 2px rgba(6,10,16,0.95), 0 0 0 4px #6fefff, 0 2px 10px rgba(0,0,0,0.45);
+    }
+    html.lf-hc #lf-a11y-toggle:focus-visible {
+      box-shadow: 0 0 0 2px #03070b, 0 0 0 4px #ff5e8a, 0 2px 10px rgba(0,0,0,0.45);
+      border-color: #ff5e8a;
+    }
+
+    /* single visible label — JS toggles aria-pressed; CSS picks the right span */
+    #lf-a11y-toggle .lf-a11y-on { display: none; }
+    #lf-a11y-toggle .lf-a11y-off { display: inline; }
+    html.lf-hc #lf-a11y-toggle .lf-a11y-off { display: none; }
+    html.lf-hc #lf-a11y-toggle .lf-a11y-on { display: inline; }
+
+    @media (max-width: 640px) {
+      #lf-a11y-toggle { font-size: 9px; letter-spacing: 1.2px; padding: 5px 9px; min-height: 26px; }
+      body { padding-bottom: max(48px, env(safe-area-inset-bottom, 0px)); }
+    }
+    @media print { #lf-a11y-toggle { display: none !important; } }
+
+    /* ── HIGH-CONTRAST MODE — opt-in, scoped to html.lf-hc ───────────── */
+    html.lf-hc body { color: #f4f6ff !important; cursor: default !important; }
+    html.lf-hc .lf-substrate,
+    html.lf-hc .lf-grid,
+    html.lf-hc .lf-scanline,
+    html.lf-hc .lf-radial { display: none !important; }
+    html.lf-hc body { background: #03070b !important; }
+
+    html.lf-hc .lf-panel,
+    html.lf-hc nav.lf-panel {
+      background: #0c1018 !important;
+      border-color: rgba(180,200,220,0.55) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    html.lf-hc .lf-panel::before { background: none !important; }
+    html.lf-hc .lf-panel-corners::after { opacity: 1 !important; }
+
+    html.lf-hc .lf-tag,
+    html.lf-hc .lf-input,
+    html.lf-hc .lf-textarea,
+    html.lf-hc .lf-btn,
+    html.lf-hc .lf-lang-pill {
+      background: #0c1018 !important;
+      border-color: rgba(180,200,220,0.6) !important;
+      color: #f4f6ff !important;
+    }
+    html.lf-hc .lf-input::placeholder,
+    html.lf-hc .lf-textarea::placeholder { color: #b8c0d0 !important; opacity: 1 !important; }
+
+    html.lf-hc .lf-btn-primary { border-color: #6fefff !important; color: #f6faff !important; background: #052633 !important; }
+    html.lf-hc .lf-btn-integrity { border-color: #4be0b8 !important; color: #ecfdf5 !important; background: #052a1f !important; }
+    html.lf-hc .lf-btn-audit    { border-color: #b694ff !important; color: #f5f3ff !important; background: #1a1233 !important; }
+    html.lf-hc .lf-btn-trace    { border-color: #4be0b8 !important; color: #ecfdf5 !important; background: #052a26 !important; }
+
+    html.lf-hc .lf-lang-pill[aria-pressed="true"] {
+      background: #1a1233 !important;
+      border-color: #b694ff !important;
+      color: #f5f3ff !important;
+    }
+
+    html.lf-hc .lf-eyebrow,
+    html.lf-hc #global-node-label,
+    html.lf-hc #nav-title,
+    html.lf-hc #hero-subtitle { color: #f4f6ff !important; }
+    html.lf-hc .lf-hex { background: #00f0ff !important; box-shadow: 0 0 12px #00f0ff !important; }
+    html.lf-hc #ai-response,
+    html.lf-hc #qa-answer,
+    html.lf-hc #loc-wait,
+    html.lf-hc h1, html.lf-hc h2 { color: #f4f6ff !important; }
   </style>
 </head>
 <body class="antialiased">
@@ -668,11 +765,47 @@
   }
 
   // ════════════════════════════════════════════════════════════════════
-  // 8. INIT — deferred via requestIdleCallback for time-to-interactive
+  // 8. A11Y — A++ KONTRAST / A− NORMÁL toggle
+  // ════════════════════════════════════════════════════════════════════
+  function initA11yToggle() {
+    const html = document.documentElement;
+    const KEY = 'lf-a11y-hc';
+    let stored = null;
+    try { stored = localStorage.getItem(KEY); } catch (_) {}
+    if (stored === '1') html.classList.add('lf-hc');
+
+    function sync(b) {
+      b.setAttribute('aria-pressed', html.classList.contains('lf-hc') ? 'true' : 'false');
+    }
+
+    const existing = document.querySelectorAll('#lf-a11y-toggle');
+    for (let i = 1; i < existing.length; i++) {
+      existing[i].parentNode && existing[i].parentNode.removeChild(existing[i]);
+    }
+    if (existing.length >= 1) { sync(existing[0]); return; }
+
+    const b = document.createElement('button');
+    b.id = 'lf-a11y-toggle';
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Přepnout vysoký kontrast / Toggle high contrast');
+    b.setAttribute('title', 'Vysoký kontrast / High contrast (A11Y)');
+    b.innerHTML = '<span class="lf-a11y-off">A++ KONTRAST</span><span class="lf-a11y-on">A− NORMÁL</span>';
+    b.addEventListener('click', () => {
+      const on = html.classList.toggle('lf-hc');
+      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (_) {}
+      sync(b);
+    });
+    document.body.appendChild(b);
+    sync(b);
+  }
+
+  // ════════════════════════════════════════════════════════════════════
+  // 9. INIT — deferred via requestIdleCallback for time-to-interactive
   // ════════════════════════════════════════════════════════════════════
   function bootstrap() {
     initLangSelector();
     setAppLang('cs');
+    initA11yToggle();
     const idle = window.requestIdleCallback || function(cb){ return setTimeout(cb, 250); };
     idle(() => { initEthicsChart(); });
     idle(() => { initInnerPlot(); }, { timeout: 1500 });
