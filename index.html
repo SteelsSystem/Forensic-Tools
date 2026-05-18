@@ -211,6 +211,8 @@
     .fade-transition { transition: opacity 0.4s var(--lf-ease), transform 0.4s var(--lf-ease); }
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { scrollbar-width: none; }
+    /* Pre-Tailwind FOUC guard: Tailwind CDN is deferred; ensure .hidden applies on first paint */
+    .hidden { display: none !important; }
 
     /* ── Plotly host ─────────────────────────────────────────────────── */
     #inner-space-plot { height: 100%; width: 100%; }
@@ -307,7 +309,7 @@
       <p id="c1-desc" class="text-sm leading-relaxed mb-6" style="color:var(--lf-ink-dim)">Analýza souladu dokumentů s etickými normami Protokolu O.</p>
       <div class="flex flex-col gap-4">
         <div class="flex items-center gap-4 flex-wrap">
-          <input id="visual-audit-input" type="file" accept="image/*" class="hidden" onchange="performVisualAudit(this)">
+          <input id="visual-audit-input" type="file" accept="image/*" class="hidden" onchange="performVisualAudit(this)" aria-label="Document upload for visual audit">
           <button id="c1-btn" onclick="document.getElementById('visual-audit-input').click()" class="lf-btn lf-btn-integrity">Vybrat Dokument</button>
           <div id="visual-audit-loading" class="hidden"><div class="lf-spinner trace"></div></div>
         </div>
@@ -359,7 +361,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="flex flex-col gap-4">
-          <input id="multi-lang-input" type="text" class="lf-input" placeholder="...">
+          <input id="multi-lang-input" type="text" class="lf-input" placeholder="..." aria-label="Linguistic projection input">
           <button id="multi-lang-btn" onclick="runMultiVectTranslation()" class="lf-btn lf-btn-trace"><span id="multi-lang-btn-text">Iniciovat Projekci</span></button>
         </div>
         <div id="multi-lang-results" class="lf-panel p-4 flex flex-col gap-2 min-h-[150px]" style="background:rgba(4,6,13,0.55)">
